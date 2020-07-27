@@ -1,13 +1,17 @@
 from discord.ext import commands
 import discord
 import asyncio
+
 answer = input('Do you want create cfg file? (y/n)\n')
+
 if answer == 'y':
+
     token = input('Enter your token: ')
     with open('config.py', 'w') as f:
         f.write(f'token = "{token}"')
 else:
     print('Starting the discord utils')
+
 from config import token
 bot = commands.Bot(command_prefix='/', self_bot=True)
 print('Ready!')
