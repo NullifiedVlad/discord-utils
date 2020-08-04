@@ -25,9 +25,27 @@ async def on_message(message):
 @bot.command()
 async def spam(ctx, count, *, words):
     await ctx.message.delete()
-    for i in range(int(count)+1):
+    for i in range(int(count)):
         await ctx.send(words)
 
+@bot.command()
+async def ascii(ctx):
+	await ctx.message.delete()
+	faces = ['( ͡° ͜ʖ ͡°)', '♥‿♥', '(⩾﹏⩽)', '(ಠ ʖ̯ ಠ)', '( ˇ෴ˇ )', '(͡ಠ ʖ̯ ͡ಠ)', '¯\_(ツ)_/¯', 'ᕙ(⇀‸↼‶)ᕗ', 'ᕦ(ò_óˇ)ᕤ', '(づ￣ ³￣)づ', '(งツ)ว', 'ヾ(-__- )ゞ', '♪♪ ヽ(ˇ∀ˇ )ゞ', '(っ▀¯▀)つ', '~(^-^)~', '\(ᵔᵕᵔ)/', '[¬º-°]¬', 'ฅ^•ﻌ•^ฅ', '(╯°□°）╯︵ ┻━┻']
+	msg= await ctx.send('.')
+	for face in faces:
+		await msg.edit(content=face)
+		await asyncio.sleep(1)
+	await msg.delete()
+@bot.command()
+async def typing(ctx, *, text):
+	await ctx.message.delete()
+	msg = await ctx.send('x')
+	message = ''
+	for i in text:
+		message += i
+		await msg.edit(content=message)
+		await asyncio.sleep(0.5)
 
 @bot.command()
 async def embed(ctx, *, text):
