@@ -2,11 +2,14 @@ from discord.ext import commands
 import discord
 import asyncio
 import requests
+import SiteParser
 import os
 
 
 # 430897863887814658
-
+x = SiteParser.Quotes()
+print(x.getQuoteMessage())
+print(x.getQuoteAuthor())
 
 def main():
     print('''
@@ -19,7 +22,7 @@ def main():
                                      ''')
     with open('token.txt', 'r') as f:
         token = f.read()
-    bot = commands.Bot(command_prefix='/')
+    bot = commands.Bot(command_prefix='/', self_bot=True)
 
     print('Working')
 
@@ -84,7 +87,25 @@ def main():
             '( ಠ ͜ʖಠ)',
             '( ͡° ʖ̯ ͡°)',
             '(▀̿Ĺ̯▀̿ ̿)',
-            '(ง ͠° ͟ل͜ ͡°)ง'
+            '(ง ͠° ͟ل͜ ͡°)ง',
+            '♥‿♥',
+            '(⩾﹏⩽)',
+            '(ಠ ʖ̯ ಠ)',
+            '( ˇ෴ˇ )',
+            '(͡ಠ ʖ̯ ͡ಠ)',
+            '¯\_(ツ)_/¯',
+            'ᕙ(⇀‸↼‶)ᕗ',
+            'ᕦ(ò_óˇ)ᕤ',
+            '(づ￣ ³￣)づ',
+            '(งツ)ว',
+            'ヾ(-__- )ゞ',
+            '♪♪ ヽ(ˇ∀ˇ )ゞ',
+            '(っ▀¯▀)つ',
+            '~(^-^)~',
+            '\(ᵔᵕᵔ)/',
+            '[¬º-°]¬',
+            'ฅ^•ﻌ•^ฅ',
+            '(╯°□°）╯︵ ┻━┻'
         ]
         msg = await ctx.send('( ͡° ͜ʖ ͡°)')
         for face in faces:
@@ -113,8 +134,13 @@ def main():
         msg = await ctx.send('Шуе')
         for i in words:
             await msg.edit(content=i)
-            await asyncio.sleep(1)
+            await asyncio.sleep(1.5)
 
+    @bot.command(aliases=['цитата'])
+    async def quote(ctx):
+        await ctx.message.delete()
+        site = SiteParser.Quotes()
+        await ctx.send(f'*{site.getQuoteMessage()}*\n**-{site.getQuoteAuthor()}**')
     @bot.command()
     async def typing(ctx, *, text):
         await ctx.message.delete()
