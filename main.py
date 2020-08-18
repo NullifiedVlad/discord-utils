@@ -4,7 +4,6 @@ import asyncio
 import requests
 import SiteParser
 import os
-from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -228,6 +227,36 @@ def main():
 
         os.remove(f'{str(ctx.author.id)}.png')
         os.remove('image.jpg')
+
+    @bot.command()
+    async def steam(ctx, url_custom):
+        account = SiteParser.Steam(url_custom)
+
+        embed = discord.Embed(title=f'**{account.getNick()}**', description=account.getGameStatus(), color=0x0095ff)
+        embed.add_field(name='**Profile lvl.**', value=str(account.getLvl()), inline=False)
+        embed.add_field(name='**VAC.**', value=str(account.getVacStatus()), inline=False)
+        embed.add_field(name='**Total comments.**', value=str(account.getTotalComments()), inline=False)
+        embed.add_field(name='**Total friends.**', value=str(account.getTotalFriends()), inline=False)
+        embed.add_field(name='**Total games.**', value=str(account.getTotalGames()), inline=False)
+        embed.add_field(name='**Total bages.**', value=str(account.getTotalBages()), inline=False)
+        embed.add_field(name='**Total screenshots.**', value=str(account.getTotalScreenshots()), inline=False)
+        embed.set_thumbnail(url=account.getProfilePicture())
+        embed.set_author(name='Steam profile checker.', icon_url='https://i.imgur.com/WK520CI.jpg')
+        embed.set_footer(text=url_custom,
+                         icon_url='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px'
+                                  '-Steam_icon_logo.svg.png')
+        try:
+            await ctx.message.delete()
+        except discord.errors.Forbidden:
+            pass
+
+        await ctx.message.edit(embed=embed, content=None)
+
+    @bot.command()
+    async def server_users(ctx):
+        print(ctx.guild.members)
+        await ctx.message.edit(embed=discord.Embed(title=f"На сервере **{len(ctx.guild.members)}** фуррей!",
+                                                   color=0xff00b7), content=None)
 
     bot.run(token, bot=False)
 
