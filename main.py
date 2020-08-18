@@ -6,23 +6,15 @@ import SiteParser
 import os
 
 
-# 430897863887814658
-x = SiteParser.Quotes()
-print(x.getQuoteMessage())
-print(x.getQuoteAuthor())
-
 def main():
     print('''
-██╗   ██╗████████╗██╗██╗     ███████╗
-██║   ██║╚══██╔══╝██║██║     ██╔════╝
-██║   ██║   ██║   ██║██║     ███████╗
-██║   ██║   ██║   ██║██║     ╚════██║
-╚██████╔╝   ██║   ██║███████╗███████║
- ╚═════╝    ╚═╝   ╚═╝╚══════╝╚══════╝ by NullifiedVlad
-                                     ''')
-    with open('token.txt', 'r') as f:
-        token = f.read()
-    bot = commands.Bot(command_prefix='/', self_bot=True)
++-------------------------------+
+|Discord utils by NullifiedVlad.|
+|   Command prefix - discord_   |
++-------------------------------+''')
+    with open('token.txt', 'r') as token:
+        token = token.read()
+    bot = commands.Bot(command_prefix='discord_', self_bot=True)
 
     print('Working')
 
@@ -41,8 +33,31 @@ def main():
 
     @bot.command()
     async def embed(ctx, *, text):
+        await ctx.message.edit(embed=discord.Embed(title=text, color=0xff00b7), content=None)
+
+    @bot.command()
+    async def emoji(ctx):
+        faces = (
+            ':grinning:',
+            ':heart_eyes:',
+            ':rage:',
+            ':hot_face:',
+            ':cold_face:',
+            ':scream:',
+            ':smiling_imp:',
+            ':sunglasses:',
+            ':poop:',
+            ':star_struck:',
+            ':partying_face:',
+            ':exploding_head:',
+            ':kissing_heart:',
+            ':clown:',
+            ':alien:',
+        )
+        for face in faces:
+            await ctx.message.edit(content=face)
+            await asyncio.sleep(0.5)
         await ctx.message.delete()
-        await ctx.send(embed=discord.Embed(title=text, color=0xff00b7))
 
     @bot.command()
     async def cat(ctx):
@@ -74,9 +89,8 @@ def main():
             await asyncio.sleep(1)
         await msg.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a))
 
-    @bot.command()
+    @bot.command(aliases=['аски', 'эмодзи'])
     async def ascii(ctx):
-        await ctx.message.delete()
         faces = [
             '( ͡° ͜ʖ ͡°)',
             '( ͠° ͟ʖ ͡°)',
@@ -107,50 +121,36 @@ def main():
             'ฅ^•ﻌ•^ฅ',
             '(╯°□°）╯︵ ┻━┻'
         ]
-        msg = await ctx.send('( ͡° ͜ʖ ͡°)')
         for face in faces:
-            await msg.edit(content=face)
+            await ctx.message.edit(content=face)
             await asyncio.sleep(1)
         await ctx.message.delete()
 
     @bot.command()
     async def rev(ctx, *, text):
-        await ctx.message.delete()
-
-        await ctx.send(text[::-1])
-
-    @bot.command(aliases=['шуе', 'ШУЕ'])
-    async def hue(ctx):
-        await ctx.message.delete()
-        words = [
-            'шУе сила',
-            'шуЕ сила',
-            'шуе Сила',
-            'шуе сИла',
-            'шуе сиЛа',
-            'шуе силА',
-            'шуе сила',
-        ]
-        msg = await ctx.send('Шуе')
-        for i in words:
-            await msg.edit(content=i)
-            await asyncio.sleep(1.5)
+        await ctx.message.edit(text[::-1])
 
     @bot.command(aliases=['цитата'])
     async def quote(ctx):
         await ctx.message.delete()
         site = SiteParser.Quotes()
-        await ctx.send(f'*{site.getQuoteMessage()}*\n**-{site.getQuoteAuthor()}**')
-    @bot.command()
-    async def typing(ctx, *, text):
-        await ctx.message.delete()
-        msg = ''
-        smsg = await ctx.send('x')
-        for word in text:
-            msg += word
-            await smsg.edit(content=msg)
-            await asyncio.sleep(1)
+        await ctx.send(f'`{site.getQuoteMessage()}`')
 
+    @bot.command()
+    async def hearts(ctx):
+        hearts1 = [
+            ':heart:',
+            ':orange_heart:',
+            ':green_heart:',
+            ':blue_heart:',
+            ':purple_heart:',
+            ':black_heart:',
+            ':white_heart:'
+        ]
+        for heart in hearts1:
+            await ctx.message.edit(content=heart)
+            await asyncio.sleep(0.5)
+        await ctx.message.delete()
     bot.run(token, bot=False)
 
 

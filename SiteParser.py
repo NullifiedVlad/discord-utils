@@ -141,6 +141,3 @@ class Quotes:
 
     def getQuoteMessage(self):
         return self.__data.find('div', {'class': 'field-item even last'}).text
-
-    def getQuoteAuthor(self):
-        return self.__data.find('a', {'title': 'Автор цитаты'}).text
