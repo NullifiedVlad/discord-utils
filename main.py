@@ -4,6 +4,8 @@ import asyncio
 import requests
 import SiteParser
 import os
+from io import BytesIO
+from PIL import Image, ImageDraw, ImageFont
 
 
 def main():
@@ -14,6 +16,7 @@ def main():
 +-------------------------------+''')
     with open('token.txt', 'r') as token:
         token = token.read()
+
     bot = commands.Bot(command_prefix='discord_', self_bot=True)
 
     print('Working')
@@ -128,13 +131,44 @@ def main():
 
     @bot.command()
     async def rev(ctx, *, text):
-        await ctx.message.edit(text[::-1])
+        await ctx.message.edit(content=text[::-1])
 
     @bot.command(aliases=['цитата'])
     async def quote(ctx):
         await ctx.message.delete()
         site = SiteParser.Quotes()
         await ctx.send(f'`{site.getQuoteMessage()}`')
+
+    @bot.command()
+    async def nigga(ctx, *, text):
+        """
+        Костыльная хрень , ктоторая нуждается
+        в переделке.
+        """
+        await ctx.message.delete()
+        if int(len(text)) < 40:
+            if 8 <= int(len(text)) <= 10:
+                large = 65
+            elif int(len(text)) >= 12:
+                large = 50
+            else:
+                large = 90
+
+            if int(len(text)) >= 4:
+                to_sum = 8
+            else:
+                to_sum = 3
+
+            image = Image.open('media/nigga/nigga.jpg')
+            draw = ImageDraw.Draw(image)
+            font_name = 'media/fonts/arialbd.ttf'
+            font = ImageFont.truetype(font_name, large, encoding="unic")
+            draw.text((200 - int(len(text)) * to_sum, 600 - large), str(text), fill=(0, 0, 0), font=font)
+            image.save('nigga-out.jpg')
+            await ctx.send(file=discord.File('nigga-out.jpg'))
+            os.remove('nigga-out.jpg')
+        else:
+            await ctx.send('To many symbols')
 
     @bot.command()
     async def hearts(ctx):
@@ -151,6 +185,50 @@ def main():
             await ctx.message.edit(content=heart)
             await asyncio.sleep(0.5)
         await ctx.message.delete()
+
+    @bot.command(aliases=['зачем', 'нахуя'])
+    async def why(ctx):
+        # скачиваем фотографию
+        with open('image.jpg', 'wb') as f:
+            f.write(requests.get(str(ctx.message.attachments[0].url)).content)
+        # импортируем фотки
+        image = Image.open('media\\think\\why.jpg')  # прикол
+        image_on_paste = Image.open('image.jpg')  # кастомная фотка
+
+        # изменяем размер и вставляем фотографию
+        image_on_paste = image_on_paste.resize((614, 336), Image.ANTIALIAS)
+        image.paste(image_on_paste, (72, 42))
+
+        image.save(f'{str(ctx.author.id)}.png')
+
+        await ctx.message.delete()
+        await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
+
+        os.remove(f'{str(ctx.author.id)}.png')
+        os.remove('image.jpg')
+
+    @bot.command(aliases=['мысль', 'гигант'])
+    async def think(ctx):
+        url = ctx.message.attachments[0].url
+        r = requests.get(str(url))
+
+        with open('image.jpg', 'wb') as f:
+            f.write(r.content)
+
+        image = Image.open('media/think/гигант_мысли.jpg')
+        image_on_paste = Image.open('image.jpg')
+
+        image_on_paste = image_on_paste.resize((500, 400), Image.ANTIALIAS)
+        image.paste(image_on_paste, (130, 13))
+
+        image.save(f'{str(ctx.author.id)}.png')
+
+        await ctx.message.delete()
+        await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
+
+        os.remove(f'{str(ctx.author.id)}.png')
+        os.remove('image.jpg')
+
     bot.run(token, bot=False)
 
 
