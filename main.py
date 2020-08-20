@@ -1,4 +1,3 @@
-from tkinter import *
 import discord
 from discord.ext import commands
 import asyncio
@@ -8,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 import SiteParser
 
 
-class SelfBot(discord.Client):
+class SelfBot:
     def __init__(self, **options):
         super().__init__(**options)
         self.bot = commands.Bot(command_prefix='discord_', self_bot=True)
