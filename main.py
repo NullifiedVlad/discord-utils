@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 import SiteParser
 
 
+
 class SelfBot:
     def __init__(self, **options):
         super().__init__(**options)
