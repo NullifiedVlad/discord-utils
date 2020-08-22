@@ -52,12 +52,12 @@ class SelfBot:
             await ctx.message.edit(embed=hembed, content=None)
 
         @self.bot.command()
-        async def spam(ctx, count: int, *, words):
+        async def spam(ctx, count: int, *, words: str):
             for i in range(count):
                 await ctx.send(words)
 
         @self.bot.command()
-        async def embed(ctx, *, text):
+        async def embed(ctx, *, text: str):
             await ctx.message.edit(embed=discord.Embed(title=text, color=0xff00b7), content=None)
 
         @self.bot.command()
@@ -94,7 +94,7 @@ class SelfBot:
             os.remove('cat.jpg')
 
         @self.bot.command()
-        async def loading(ctx, *, label):
+        async def loading(ctx, *, label: str):
             await ctx.message.delete()
             bars = [
                 '[----------]0%',
@@ -152,7 +152,7 @@ class SelfBot:
             await ctx.message.delete()
 
         @self.bot.command()
-        async def rev(ctx, *, text):
+        async def rev(ctx, *, text: str):
             await ctx.message.edit(content=text[::-1])
 
         @self.bot.command(aliases=['цитата'])
@@ -162,7 +162,7 @@ class SelfBot:
             await ctx.send(f'`{site.getQuoteMessage()}`')
 
         @self.bot.command()
-        async def nigga(ctx, *, text):
+        async def nigga(ctx, *, text: str):
             """
                 Костыльная хрень , ктоторая нуждается
                 в переделке.
