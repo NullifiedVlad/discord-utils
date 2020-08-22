@@ -7,7 +7,6 @@ from PIL import Image, ImageDraw, ImageFont
 import SiteParser
 
 
-
 class SelfBot:
     def __init__(self, **options):
         super().__init__(**options)
@@ -280,8 +279,4 @@ if __name__ == '__main__':
 В файле token.txt замените токен на свой!
 Иначе вы получите ошибку!""")
     input("Для продолжения введите Enter: ")
-    try:
-        SelfBot().run()
-    except Exception:
-        print("Токен введён не правильно")
-        exit()
+    SelfBot().run()
