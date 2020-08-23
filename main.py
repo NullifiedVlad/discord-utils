@@ -287,7 +287,7 @@ class SelfBot:
                 'omg': 'media/Mae/omg.png',
                 'tired': 'media/Mae/tired.png',
                 'scared': 'media/Mae/scared.png',
-                'pff': 'media/Mae/pff.png',
+                'pff': 'media/Mae/pff.png'
             }
 
             try:
