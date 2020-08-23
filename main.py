@@ -99,7 +99,6 @@ class SelfBot:
 
         @self.bot.command()
         async def loading(ctx, *, label: str):
-            await ctx.message.delete()
             bars = (
                 '[----------]0%',
                 '[#---------]10%',
