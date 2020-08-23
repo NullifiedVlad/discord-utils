@@ -293,6 +293,8 @@ class SelfBot:
                 await ctx.send(file=discord.File(images[emotion]))
             except KeyError:
                 await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!', color=0xff0000))
+                await asyncio.sleep(1.5)
+                await ctx.message.delete()
 
         @self.bot.command()
         async def change_game(ctx, *, game: str):
