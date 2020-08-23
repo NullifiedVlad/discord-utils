@@ -292,7 +292,7 @@ class SelfBot:
             try:
                 await ctx.send(file=discord.File(images[emotion]))
             except KeyError:
-                 error_message = await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!', color=0xff0000))
+                error_message = await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!', color=0xff0000))
                 await asyncio.sleep(1.5)
                 await error_message.delete()
 
