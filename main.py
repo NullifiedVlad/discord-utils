@@ -114,8 +114,11 @@ class SelfBot:
                 await asyncio.sleep(1)
             await msg.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a))
 
-        @self.bot.command(aliases=['аски', 'эмодзи', 'ascii'])
+        @self.bot.command(aliases=['ascii'])
         async def zalgo(ctx):
+            """
+            Анимированные zalgo эмодзи
+            """
             faces = [
                 '( ͡° ͜ʖ ͡°)',
                 '( ͠° ͟ʖ ͡°)',
@@ -153,10 +156,16 @@ class SelfBot:
 
         @self.bot.command()
         async def rev(ctx, *, text: str):
+            """
+            Переворачивает сообщение
+            """
             await ctx.message.edit(content=text[::-1])
 
-        @self.bot.command(aliases=['цитата'])
+        @self.bot.command()
         async def quote(ctx):
+            """
+            Парсит и отправляет цитату
+            """
             await ctx.message.delete()
             site = SiteParser.Quotes()
             await ctx.send(f'`{site.getQuoteMessage()}`')
@@ -194,6 +203,9 @@ class SelfBot:
 
         @self.bot.command()
         async def hearts(ctx):
+            """
+            Анимированные сердечки OwO
+            """
             hearts1 = [
                 ':heart:',
                 ':orange_heart:',
@@ -210,6 +222,10 @@ class SelfBot:
 
         @self.bot.command(aliases=['зачем', 'нахуя'])
         async def why(ctx):
+            """
+            Делает мем нахуя а главное зачем
+            ВАЖНО! Берёт картинку из сообщения
+            """
             # скачиваем фотографию
             with open('image.jpg', 'wb') as f:
                 f.write(requests.get(str(ctx.message.attachments[0].url)).content)
@@ -231,6 +247,10 @@ class SelfBot:
 
         @self.bot.command(aliases=['мысль', 'гигант'])
         async def think(ctx):
+            """
+            Делает мем гигант мысли
+            ВАЖНО! Берёт картинку из сообщения
+            """
             url = ctx.message.attachments[0].url
             r = requests.get(str(url))
 
@@ -250,7 +270,10 @@ class SelfBot:
 
             os.remove(f'{str(ctx.author.id)}.png')
             os.remove('image.jpg')
-
+        """
+        Стикеры с Мей
+        https://bit.ly/2Evc2iI
+        """
         @self.bot.command()
         async def mae_hi(ctx):
             await ctx.message.delete()
