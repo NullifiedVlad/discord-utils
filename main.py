@@ -6,6 +6,8 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 import SiteParser
 
+# pyinstaller -F -i "media\icons\logo.ico" main.py
+
 
 class SelfBot:
     def __init__(self, **options):
@@ -112,9 +114,11 @@ class SelfBot:
                 '[#########-]90%',
                 '[##########]100%')
             for bar in bars:
-                await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description=bar, color=0x0095ff))
+                await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description=bar, color=0x0095ff),
+                                       content=None)
                 await asyncio.sleep(1)
-            await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a))
+            await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a),
+                                   content=None)
 
         @self.bot.command(aliases=['ascii'])
         async def zalgo(ctx):
