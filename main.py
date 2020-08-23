@@ -11,17 +11,20 @@ class SelfBot:
     def __init__(self, **options):
         super().__init__(**options)
         self.bot = commands.Bot(command_prefix='discord_', self_bot=True)
-        self.bot.remove_command('help')
         with open('token.txt', 'r') as token:
-            self.token = token.read()
+            self.__token = token.read()
 
     def run(self):
-
+        self.bot.remove_command('help')
         print('Запустился')
 
         @self.bot.event
         async def on_ready():
-            await self.bot.change_presence(activity=discord.Game(f'discord utils'))
+            """
+            Этот ивент не работает должным образом с обычными профилями
+            Иногда срабатывает сразу иногда через какоето время
+            """
+            await self.bot.change_presence(activity=discord.Game('discord utils'))
 
         @self.bot.event
         async def on_message(message):
@@ -42,6 +45,7 @@ class SelfBot:
             hembed.add_field(name='**discord_loading**', value='Создать загрузку.', inline=False)
             hembed.add_field(name='**discord_why**', value='Нахуя а главное зачем.', inline=False)
             hembed.add_field(name='**discord_hearts**', value='Радужное сердце.', inline=False)
+            hembed.add_field(name='**discord_change_game**', value='Радужное сердце.', inline=False)
             hembed.add_field(name='**discord_think**', value='Гигант мысли, отец...', inline=False)
             hembed.add_field(name='**discord_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
             hembed.set_thumbnail(url='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512'
@@ -96,7 +100,7 @@ class SelfBot:
         @self.bot.command()
         async def loading(ctx, *, label: str):
             await ctx.message.delete()
-            bars = [
+            bars = (
                 '[----------]0%',
                 '[#---------]10%',
                 '[##--------]20%',
@@ -107,19 +111,18 @@ class SelfBot:
                 '[#######---]70%',
                 '[########--]80%',
                 '[#########-]90%',
-                '[##########]100%']
-            msg = await ctx.send(embed=discord.Embed(title=f'**{label}**', description='None', color=0x0095ff))
+                '[##########]100%')
             for bar in bars:
-                await msg.edit(embed=discord.Embed(title=f'**{label}**', description=bar, color=0x0095ff))
+                await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description=bar, color=0x0095ff))
                 await asyncio.sleep(1)
-            await msg.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a))
+            await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a))
 
         @self.bot.command(aliases=['ascii'])
         async def zalgo(ctx):
             """
             Анимированные zalgo эмодзи
             """
-            faces = [
+            faces = (
                 '( ͡° ͜ʖ ͡°)',
                 '( ͠° ͟ʖ ͡°)',
                 '( ͡~ ͜ʖ ͡°)',
@@ -148,7 +151,7 @@ class SelfBot:
                 '[¬º-°]¬',
                 'ฅ^•ﻌ•^ฅ',
                 '(╯°□°）╯︵ ┻━┻'
-            ]
+            )
             for face in faces:
                 await ctx.message.edit(content=face)
                 await asyncio.sleep(1)
@@ -166,9 +169,7 @@ class SelfBot:
             """
             Парсит и отправляет цитату
             """
-            await ctx.message.delete()
-            site = SiteParser.Quotes()
-            await ctx.send(f'`{site.getQuoteMessage()}`')
+            await ctx.message.edit(content=f'`{SiteParser.Quotes().getQuoteMessage()}`')
 
         @self.bot.command()
         async def nigga(ctx, *, text: str):
@@ -230,7 +231,7 @@ class SelfBot:
             with open('image.jpg', 'wb') as f:
                 f.write(requests.get(str(ctx.message.attachments[0].url)).content)
             # импортируем фотки
-            image = Image.open('media\\think\\why.jpg')  # прикол
+            image = Image.open('media\\memes\\why.jpg')  # прикол
             image_on_paste = Image.open('image.jpg')  # кастомная фотка
 
             # изменяем размер и вставляем фотографию
@@ -257,7 +258,7 @@ class SelfBot:
             with open('image.jpg', 'wb') as f:
                 f.write(r.content)
 
-            image = Image.open('media/think/гигант_мысли.jpg')
+            image = Image.open('media/memes/think.jpg')
             image_on_paste = Image.open('image.jpg')
 
             image_on_paste = image_on_paste.resize((500, 400), Image.ANTIALIAS)
@@ -270,36 +271,43 @@ class SelfBot:
 
             os.remove(f'{str(ctx.author.id)}.png')
             os.remove('image.jpg')
-        """
-        Стикеры с Мей
-        https://bit.ly/2Evc2iI
-        """
-        @self.bot.command()
-        async def mae_hi(ctx):
-            await ctx.message.delete()
-            await ctx.send(file=discord.File('media/Mae/hi.png'))
 
         @self.bot.command()
-        async def mae_kiss(ctx):
+        async def mae(ctx, emotion: str):
+            """
+            Стикеры с Мей
+            https://bit.ly/2Evc2iI
+            """
             await ctx.message.delete()
-            await ctx.send(file=discord.File('media/Mae/kiss.png'))
+            images = {
+                'hi': 'media/Mae/hi.png',
+                'kiss': 'media/Mae/kiss.png',
+                'emm': 'media/Mae/emm.png',
+                'owo': 'media/Mae/OwO.png',
+                'omg': 'media/Mae/omg.png',
+                'tired': 'media/Mae/tired.png',
+                'scared': 'media/Mae/scared.png',
+                'pff': 'media/Mae/pff.png',
+            }
+
+            try:
+                await ctx.send(file=discord.File(images[emotion]))
+            except KeyError:
+                await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!', color=0xff0000))
 
         @self.bot.command()
-        async def mae_scared(ctx):
-            await ctx.message.delete()
-            await ctx.send(file=discord.File('media/Mae/scared.png'))
+        async def change_game(ctx, *, game: str):
+            """
+            Изменение игры в профиле
+            """
+            await self.bot.change_presence(activity=discord.Game(game))
+            await ctx.message.edit(embed=discord.Embed(title=f'Игра изменна на: "**{game}**"', color=0xff5f5f))
 
-        @self.bot.command()
-        async def mae_owo(ctx):
-            await ctx.message.delete()
-            await ctx.send(file=discord.File('media/Mae/OwO.png'))
-
-        self.bot.run(self.token, bot=False)
+        self.bot.run(self.__token, bot=False)
 
 
 if __name__ == '__main__':
-    print("""
-В файле token.txt замените токен на свой!
-Иначе вы получите ошибку!""")
-    input("Для продолжения введите Enter: ")
+    input("""В файле token.txt замените токен на свой!
+Иначе вы получите ошибку!
+Для продолжения введите Enter: """)
     SelfBot().run()

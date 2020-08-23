@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
+
 class Jokes:
     """
     Парсит с сайта https://nekdo.ru/random/ всякие шутки
