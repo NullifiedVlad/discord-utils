@@ -212,7 +212,7 @@ class SelfBot:
             """
             Анимированные сердечки OwO
             """
-            hearts1 = [
+            hearts1 = (
                 ':heart:',
                 ':orange_heart:',
                 ':green_heart:',
@@ -220,7 +220,7 @@ class SelfBot:
                 ':purple_heart:',
                 ':black_heart:',
                 ':white_heart:'
-            ]
+            )
             for heart in hearts1:
                 await ctx.message.edit(content=heart)
                 await asyncio.sleep(0.5)
@@ -233,23 +233,30 @@ class SelfBot:
             ВАЖНО! Берёт картинку из сообщения
             """
             # скачиваем фотографию
-            with open('image.jpg', 'wb') as f:
-                f.write(requests.get(str(ctx.message.attachments[0].url)).content)
-            # импортируем фотки
-            image = Image.open('media\\memes\\why.jpg')  # прикол
-            image_on_paste = Image.open('image.jpg')  # кастомная фотка
+            try:
+                with open('image.jpg', 'wb') as f:
+                    f.write(requests.get(str(ctx.message.attachments[0].url)).content)
+                # импортируем фотки
+                image = Image.open('media\\memes\\why.jpg')  # прикол
+                image_on_paste = Image.open('image.jpg')  # кастомная фотка
 
-            # изменяем размер и вставляем фотографию
-            image_on_paste = image_on_paste.resize((614, 336), Image.ANTIALIAS)
-            image.paste(image_on_paste, (72, 42))
+                # изменяем размер и вставляем фотографию
+                image_on_paste = image_on_paste.resize((614, 336), Image.ANTIALIAS)
+                image.paste(image_on_paste, (72, 42))
 
-            image.save(f'{str(ctx.author.id)}.png')
+                image.save(f'{str(ctx.author.id)}.png')
 
-            await ctx.message.delete()
-            await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
+                await ctx.message.delete()
+                await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
 
-            os.remove(f'{str(ctx.author.id)}.png')
-            os.remove('image.jpg')
+                os.remove(f'{str(ctx.author.id)}.png')
+                os.remove('image.jpg')
+            except IndexError:
+                await ctx.message.edit(embed=discord.Embed(title=':x: Вы не приложили картинку к команде!',
+                                                           color=0xff0000), content=None)
+
+                await asyncio.sleep(1.5)
+                await ctx.message.delete()
 
         @self.bot.command(aliases=['мысль', 'гигант'])
         async def think(ctx):
@@ -257,25 +264,29 @@ class SelfBot:
             Делает мем гигант мысли
             ВАЖНО! Берёт картинку из сообщения
             """
-            url = ctx.message.attachments[0].url
-            r = requests.get(str(url))
+            try:
+                with open('image.jpg', 'wb') as f:
+                    f.write(requests.get(str(ctx.message.attachments[0].url)).content)
 
-            with open('image.jpg', 'wb') as f:
-                f.write(r.content)
+                image = Image.open('media/memes/think.jpg')
+                image_on_paste = Image.open('image.jpg')
 
-            image = Image.open('media/memes/think.jpg')
-            image_on_paste = Image.open('image.jpg')
+                image_on_paste = image_on_paste.resize((500, 400), Image.ANTIALIAS)
+                image.paste(image_on_paste, (130, 13))
 
-            image_on_paste = image_on_paste.resize((500, 400), Image.ANTIALIAS)
-            image.paste(image_on_paste, (130, 13))
+                image.save(f'{str(ctx.author.id)}.png')
 
-            image.save(f'{str(ctx.author.id)}.png')
+                await ctx.message.delete()
+                await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
 
-            await ctx.message.delete()
-            await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
+                os.remove(f'{str(ctx.author.id)}.png')
+                os.remove('image.jpg')
+            except KeyError:
+                await ctx.message.edit(embed=discord.Embed(title=':x: Вы не приложили картинку к команде!',
+                                                           color=0xff0000), content=None)
 
-            os.remove(f'{str(ctx.author.id)}.png')
-            os.remove('image.jpg')
+                await asyncio.sleep(1.5)
+                await ctx.message.delete()
 
         @self.bot.command()
         async def mae(ctx, emotion: str):
@@ -298,7 +309,8 @@ class SelfBot:
             try:
                 await ctx.send(file=discord.File(images[emotion]))
             except KeyError:
-                error_message = await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!', color=0xff0000))
+                error_message = await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!',
+                                                                   color=0xff0000), content=None)
                 await asyncio.sleep(1.5)
                 await error_message.delete()
 
@@ -312,12 +324,12 @@ class SelfBot:
 
         @self.bot.command()
         async def trans(ctx, mode: str, *, text: str):
-            await ctx.message.edit(content='Translating...')
+            await ctx.message.edit(content='Перевожу...')
             try:
                 text = Translator().translate(text=text, dest=mode)
                 await ctx.message.edit(content=text.text)
             except ValueError:
-                await ctx.message.edit(content=None, embed=discord.Embed(title=f'Вы выбрали несуществующий язык!',
+                await ctx.message.edit(content=None, embed=discord.Embed(title=f':x: Вы выбрали несуществующий язык!',
                                                                          color=0xff5f5f))
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
