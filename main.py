@@ -5,6 +5,8 @@ import requests
 import os
 from PIL import Image, ImageDraw, ImageFont
 import SiteParser
+from googletrans import Translator
+
 
 # pyinstaller -F -i "media\icons\logo.ico" main.py
 
@@ -12,7 +14,7 @@ import SiteParser
 class SelfBot:
     def __init__(self, **options):
         super().__init__(**options)
-        self.bot = commands.Bot(command_prefix='discord_', self_bot=True)
+        self.bot = commands.Bot(command_prefix='d_', self_bot=True)
         with open('token.txt', 'r') as token:
             self.__token = token.read()
 
@@ -36,20 +38,20 @@ class SelfBot:
         async def help_message(ctx):
             hembed = discord.Embed(title='**ФИЧИ**', description='Discord utils', color=0x0095ff, )
             # заголовки
-            hembed.add_field(name='**discord_help**', value='Это сообщение.', inline=False)
-            hembed.add_field(name='**discord_cat**', value='Отправить кота.', inline=False)
-            hembed.add_field(name='**discord_embed**', value='Отправить ембиент.', inline=False)
-            hembed.add_field(name='**discord_spam**', value='Поспамить.', inline=False)
-            hembed.add_field(name='**discord_emoji**', value='Анимированные эмодзи', inline=False)
-            hembed.add_field(name='**discord_rev**', value='Перевернуть сообщение.', inline=False)
-            hembed.add_field(name='**discord_ascii**', value='Анимированные залго смайлы.', inline=True)
-            hembed.add_field(name='**discord_nigga**', value='Сделать мем про ниггу.', inline=False)
-            hembed.add_field(name='**discord_loading**', value='Создать загрузку.', inline=False)
-            hembed.add_field(name='**discord_why**', value='Нахуя а главное зачем.', inline=False)
-            hembed.add_field(name='**discord_hearts**', value='Радужное сердце.', inline=False)
-            hembed.add_field(name='**discord_change_game**', value='Радужное сердце.', inline=False)
-            hembed.add_field(name='**discord_think**', value='Гигант мысли, отец...', inline=False)
-            hembed.add_field(name='**discord_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
+            hembed.add_field(name='**d_help**', value='Это сообщение.', inline=False)
+            hembed.add_field(name='**d_cat**', value='Отправить кота.', inline=False)
+            hembed.add_field(name='**d_embed**', value='Отправить ембиент.', inline=False)
+            hembed.add_field(name='**d_spam**', value='Поспамить.', inline=False)
+            hembed.add_field(name='**d_emoji**', value='Анимированные эмодзи', inline=False)
+            hembed.add_field(name='**d_rev**', value='Перевернуть сообщение.', inline=False)
+            hembed.add_field(name='**d_ascii**', value='Анимированные залго смайлы.', inline=True)
+            hembed.add_field(name='**d_nigga**', value='Сделать мем про ниггу.', inline=False)
+            hembed.add_field(name='**d_loading**', value='Создать загрузку.', inline=False)
+            hembed.add_field(name='**d_why**', value='Нахуя а главное зачем.', inline=False)
+            hembed.add_field(name='**d_hearts**', value='Радужное сердце.', inline=False)
+            hembed.add_field(name='**d_change_game**', value='Радужное сердце.', inline=False)
+            hembed.add_field(name='**d_think**', value='Гигант мысли, отец...', inline=False)
+            hembed.add_field(name='**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
             hembed.set_thumbnail(url='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512'
                                      '/91_Discord_logo_logos-512.png')
             hembed.set_footer(text=f'Created by nullifiedVlad',
@@ -307,6 +309,18 @@ class SelfBot:
             """
             await self.bot.change_presence(activity=discord.Game(game))
             await ctx.message.edit(embed=discord.Embed(title=f'Игра изменна на: "**{game}**"', color=0xff5f5f))
+
+        @self.bot.command()
+        async def trans(ctx, mode: str, *, text: str):
+            await ctx.message.edit(content='Translating...')
+            try:
+                text = Translator().translate(text=text, dest=mode)
+                await ctx.message.edit(content=text.text)
+            except ValueError:
+                await ctx.message.edit(content=None, embed=discord.Embed(title=f'Вы выбрали несуществующий язык!',
+                                                                         color=0xff5f5f))
+                await asyncio.sleep(1.5)
+                await ctx.message.delete()
 
         self.bot.run(self.__token, bot=False)
 
