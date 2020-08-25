@@ -6,7 +6,7 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 import SiteParser
 from googletrans import Translator
-
+import io
 
 # pyinstaller -F -i "media\icons\logo.ico" main.py
 
@@ -36,7 +36,7 @@ class SelfBot:
 
         @self.bot.command(aliases=['help'])
         async def help_message(ctx):
-            hembed = discord.Embed(title='**ФИЧИ**', description='Discord utils', color=0x0095ff, )
+            hembed = discord.Embed(title='**Функции**', description='Discord utils', color=0x0095ff, )
             # заголовки
             hembed.add_field(name='**d_help**', value='Это сообщение.', inline=False)
             hembed.add_field(name='**d_cat**', value='Отправить кота.', inline=False)
@@ -47,16 +47,17 @@ class SelfBot:
             hembed.add_field(name='**d_ascii**', value='Анимированные залго смайлы.', inline=True)
             hembed.add_field(name='**d_nigga**', value='Сделать мем про ниггу.', inline=False)
             hembed.add_field(name='**d_loading**', value='Создать загрузку.', inline=False)
-            hembed.add_field(name='**d_why**', value='Нахуя а главное зачем.', inline=False)
+            hembed.add_field(name='**d_why**', value='Нахуя, а главное зачем.', inline=False)
             hembed.add_field(name='**d_hearts**', value='Радужное сердце.', inline=False)
-            hembed.add_field(name='**d_change_game**', value='Радужное сердце.', inline=False)
+            hembed.add_field(name='**d_change_game**', value='Изменить игру в профиле.', inline=False)
             hembed.add_field(name='**d_think**', value='Гигант мысли, отец...', inline=False)
             hembed.add_field(name='**d_trans**', value='Перевод на другие языки.', inline=False)
             hembed.add_field(name='**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
             hembed.set_thumbnail(url='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512'
                                      '/91_Discord_logo_logos-512.png')
-            hembed.set_footer(text=f'Created by nullifiedVlad',
-                              icon_url='https://i.imgur.com/WK520CI.jpg')
+            hembed.set_footer(text=f'Created by Vladislav Alpatov',
+                              icon_url='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/88'
+                                       '/88a9bb41c035dee03f76cb1e48adc40b45f3ac9e_full.jpg')
             hembed.set_author(name=self.bot.user.name, icon_url=ctx.author.avatar_url)
             await ctx.message.edit(embed=hembed, content=None)
 
@@ -197,10 +198,10 @@ class SelfBot:
                 else:
                     to_sum = 3
 
-                image = Image.open('media/nigga/nigga.jpg')
+                image = Image.open(io.BytesIO(requests.get('https://github.com/NullifiedVlad/discord-utils/blob'
+                                                           '/master/media/nigga/nigga.jpg?raw=true').content))
                 draw = ImageDraw.Draw(image)
-                font_name = 'media/fonts/arialbd.ttf'
-                font = ImageFont.truetype(font_name, large, encoding="unic")
+                font = ImageFont.truetype('arialbd.ttf', large, encoding="unic")
                 draw.text((200 - int(len(text)) * to_sum, 600 - large), str(text), fill=(0, 0, 0), font=font)
                 image.save('nigga-out.jpg')
                 await ctx.send(file=discord.File('nigga-out.jpg'))
@@ -235,11 +236,10 @@ class SelfBot:
             """
             # скачиваем фотографию
             try:
-                with open('image.jpg', 'wb') as f:
-                    f.write(requests.get(str(ctx.message.attachments[0].url)).content)
                 # импортируем фотки
-                image = Image.open('media\\memes\\why.jpg')  # прикол
-                image_on_paste = Image.open('image.jpg')  # кастомная фотка
+                image = Image.open(io.BytesIO(requests.get('https://github.com/NullifiedVlad/discord-utils/blob'
+                                                           '/master/media/memes/why.jpg?raw=true').content))  # прикол
+                image_on_paste = Image.open(io.BytesIO(requests.get(ctx.message.attachments[0].url).content))
 
                 # изменяем размер и вставляем фотографию
                 image_on_paste = image_on_paste.resize((614, 336), Image.ANTIALIAS)
@@ -251,7 +251,6 @@ class SelfBot:
                 await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
 
                 os.remove(f'{str(ctx.author.id)}.png')
-                os.remove('image.jpg')
             except IndexError:
                 await ctx.message.edit(embed=discord.Embed(title=':x: Вы не приложили картинку к команде!',
                                                            color=0xff0000), content=None)
@@ -266,11 +265,10 @@ class SelfBot:
             ВАЖНО! Берёт картинку из сообщения
             """
             try:
-                with open('image.jpg', 'wb') as f:
-                    f.write(requests.get(str(ctx.message.attachments[0].url)).content)
 
-                image = Image.open('media/memes/think.jpg')
-                image_on_paste = Image.open('image.jpg')
+                image = Image.open(io.BytesIO(requests.get('https://github.com/NullifiedVlad/discord-utils/blob'
+                                                           '/master/media/memes/think.jpg?raw=true').content))
+                image_on_paste = Image.open(io.BytesIO(requests.get(str(ctx.message.attachments[0].url)).content))
 
                 image_on_paste = image_on_paste.resize((500, 400), Image.ANTIALIAS)
                 image.paste(image_on_paste, (130, 13))
@@ -281,11 +279,9 @@ class SelfBot:
                 await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
 
                 os.remove(f'{str(ctx.author.id)}.png')
-                os.remove('image.jpg')
             except KeyError:
                 await ctx.message.edit(embed=discord.Embed(title=':x: Вы не приложили картинку к команде!',
                                                            color=0xff0000), content=None)
-
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
 
@@ -297,18 +293,22 @@ class SelfBot:
             """
             await ctx.message.delete()
             images = {
-                'hi': 'media/Mae/hi.png',
-                'kiss': 'media/Mae/kiss.png',
-                'emm': 'media/Mae/emm.png',
-                'owo': 'media/Mae/OwO.png',
-                'omg': 'media/Mae/omg.png',
-                'tired': 'media/Mae/tired.png',
-                'scared': 'media/Mae/scared.png',
-                'pff': 'media/Mae/pff.png'
+                'hi': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/hi.png?raw=true',
+                'kiss': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/kiss.png?raw=true',
+                'emm': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/emm.png?raw=true',
+                'owo': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/OwO.png?raw=true',
+                'omg': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/omg.png?raw=true',
+                'tired': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/tired.png?raw=true',
+                'scared': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/scared.png?raw=true',
+                'pff': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/pff.png?raw=true'
             }
 
             try:
-                await ctx.send(file=discord.File(images[emotion]))
+                content = requests.get(images[emotion]).content
+                with open('sticker.png', 'wb') as f:
+                    f.write(content)
+                await ctx.send(file=discord.File('sticker.png'))
+                os.remove('sticker.png')
             except KeyError:
                 error_message = await ctx.send(embed=discord.Embed(title=':x: Похоже вашего стикера нет в списке!',
                                                                    color=0xff0000), content=None)
@@ -321,7 +321,10 @@ class SelfBot:
             Изменение игры в профиле
             """
             await self.bot.change_presence(activity=discord.Game(game))
-            await ctx.message.edit(embed=discord.Embed(title=f'Игра изменна на: "**{game}**"', color=0xff5f5f))
+            await ctx.message.edit(content=None, embed=discord.Embed(title=f'Игра изменна на: "**{game}**"',
+                                                                     color=0xff5f5f))
+            await asyncio.sleep(1.5)
+            await ctx.message.delete()
 
         @self.bot.command()
         async def trans(ctx, mode: str, *, text: str):
