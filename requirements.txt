@@ -3,3 +3,4 @@ Pillow
 bs4
 Discord.py
 googletrans
+pyinstaller

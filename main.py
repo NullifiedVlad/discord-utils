@@ -198,7 +198,7 @@ class SelfBot:
                 else:
                     to_sum = 3
 
-                image = Image.open(io.BytesIO(requests.get('https://github.com/NullifiedVlad/discord-utils/blob'
+                image = Image.open(io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob'
                                                            '/master/media/nigga/nigga.jpg?raw=true').content))
                 draw = ImageDraw.Draw(image)
                 font = ImageFont.truetype('arialbd.ttf', large, encoding="unic")
@@ -237,7 +237,7 @@ class SelfBot:
             # скачиваем фотографию
             try:
                 # импортируем фотки
-                image = Image.open(io.BytesIO(requests.get('https://github.com/NullifiedVlad/discord-utils/blob'
+                image = Image.open(io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob'
                                                            '/master/media/memes/why.jpg?raw=true').content))  # прикол
                 image_on_paste = Image.open(io.BytesIO(requests.get(ctx.message.attachments[0].url).content))
 
@@ -266,7 +266,7 @@ class SelfBot:
             """
             try:
 
-                image = Image.open(io.BytesIO(requests.get('https://github.com/NullifiedVlad/discord-utils/blob'
+                image = Image.open(io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob'
                                                            '/master/media/memes/think.jpg?raw=true').content))
                 image_on_paste = Image.open(io.BytesIO(requests.get(str(ctx.message.attachments[0].url)).content))
 
@@ -293,14 +293,14 @@ class SelfBot:
             """
             await ctx.message.delete()
             images = {
-                'hi': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/hi.png?raw=true',
-                'kiss': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/kiss.png?raw=true',
-                'emm': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/emm.png?raw=true',
-                'owo': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/OwO.png?raw=true',
-                'omg': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/omg.png?raw=true',
-                'tired': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/tired.png?raw=true',
-                'scared': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/scared.png?raw=true',
-                'pff': 'https://github.com/NullifiedVlad/discord-utils/blob/master/media/Mae/pff.png?raw=true'
+                'hi': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/hi.png?raw=true',
+                'kiss': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/kiss.png?raw=true',
+                'emm': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/emm.png?raw=true',
+                'owo': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/OwO.png?raw=true',
+                'omg': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/omg.png?raw=true',
+                'tired': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/tired.png?raw=true',
+                'scared': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/scared.png?raw=true',
+                'pff': 'https://github.com/VladislavAlpatov/discord-utils/blob/master/media/Mae/pff.png?raw=true'
             }
 
             try:
