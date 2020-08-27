@@ -1,19 +1,25 @@
-import discord
-from discord.ext import commands
 import asyncio
-import requests
-import os
-from PIL import Image, ImageDraw, ImageFont
-import SiteParser
-from googletrans import Translator
 import io
+import os
+
+import discord
+import requests
+from PIL import Image, ImageDraw, ImageFont
+from discord.ext import commands
+from googletrans import Translator
+from colorama import Fore
+import SiteParser
+
 
 # pyinstaller -F -i "media\icons\logo.ico" main.py
 
 
 class SelfBot:
-    def __init__(self, **options):
-        super().__init__(**options)
+    def __init__(self):
+        """
+        Основной класс бота
+        """
+        super().__init__()
         self.bot = commands.Bot(command_prefix='d_', self_bot=True)
         with open('token.txt', 'r') as token:
             self.__token = token.read()
@@ -198,10 +204,13 @@ class SelfBot:
                 else:
                     to_sum = 3
 
-                image = Image.open(io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob'
-                                                           '/master/media/nigga/nigga.jpg?raw=true').content))
+                image = Image.open(io.BytesIO(requests.get('https://raw.githubusercontent.com/VladislavAlpatov'
+                                                           '/discord-utils/master/media/nigga/nigga.jpg').content))
+                # скачиваем шрифт
+                arial = io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master/media'
+                                                '/fonts/arialbd.ttf?raw=true').content)
                 draw = ImageDraw.Draw(image)
-                font = ImageFont.truetype('arialbd.ttf', large, encoding="unic")
+                font = ImageFont.truetype(arial, large, encoding="unic")
                 draw.text((200 - int(len(text)) * to_sum, 600 - large), str(text), fill=(0, 0, 0), font=font)
                 image.save('nigga-out.jpg')
                 await ctx.send(file=discord.File('nigga-out.jpg'))
@@ -338,11 +347,19 @@ class SelfBot:
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
 
+        @self.bot.command()
+        async def joke(ctx):
+            await ctx.message.edit(content=SiteParser.Jokes().getJoke())
+
         self.bot.run(self.__token, bot=False)
 
 
 if __name__ == '__main__':
-    input("""В файле token.txt замените токен на свой!
+    input(f"""{Fore.RED}МЫ НЕ НЕСЁМ ОТВЕТСЕННОСТИ ЗА ВАШ АККАУНТ!
+ВСЮ ОТВEСТВЕННОСТЬ ЗА НАРУШЕНИЕ ToS ВЫ БЕРЁТЕ НА СЕБЯ! {Fore.WHITE}
+{Fore.YELLOW}
+В файле token.txt ЗАМЕНИТЕ ТОКЕН НА СВОЙ!
 Иначе вы получите ошибку!
+{Fore.WHITE}
 Для продолжения введите Enter: """)
     SelfBot().run()
