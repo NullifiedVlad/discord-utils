@@ -59,6 +59,7 @@ class SelfBot:
             hembed.add_field(name='**d_think**', value='Гигант мысли, отец...', inline=False)
             hembed.add_field(name='**d_trans**', value='Перевод на другие языки.', inline=False)
             hembed.add_field(name='**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
+            hembed.add_field(name='**d_fresko**', value='Сделать мем про Жака Фреска.', inline=False)
             hembed.set_thumbnail(url='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512'
                                      '/91_Discord_logo_logos-512.png')
             hembed.set_footer(text=f'Created by Vladislav Alpatov',
@@ -360,7 +361,6 @@ class SelfBot:
             # скачиваем шрифт
             arial = io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master/media'
                                             '/fonts/arialbd.ttf?raw=true').content)
-            print(len('       '))
             draw = ImageDraw.Draw(image)
             font = ImageFont.truetype(arial, 35, encoding="unic")
             draw.text((20, 60), f'{text[:18]}\n{text[18:39]}\n{text[39:59]}', fill=(0, 0, 0), font=font)
