@@ -351,6 +351,23 @@ class SelfBot:
         async def joke(ctx):
             await ctx.message.edit(content=SiteParser.Jokes().getJoke())
 
+        @self.bot.command()
+        async def fresko(ctx, *, text: str):
+            await ctx.message.delete()
+
+            image = Image.open('media/memes/fresko.jpg')
+
+            # скачиваем шрифт
+            arial = io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master/media'
+                                            '/fonts/arialbd.ttf?raw=true').content)
+            print(len('       '))
+            draw = ImageDraw.Draw(image)
+            font = ImageFont.truetype(arial, 35, encoding="unic")
+            draw.text((20, 60), f'{text[:18]}\n{text[18:39]}\n{text[39:59]}', fill=(0, 0, 0), font=font)
+            image.save('fresko.jpg')
+            await ctx.send(file=discord.File('fresko.jpg'))
+            os.remove('fresko.jpg')
+
         self.bot.run(self.__token, bot=False)
 
 
