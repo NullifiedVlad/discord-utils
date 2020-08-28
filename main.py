@@ -26,12 +26,13 @@ class SelfBot:
 
     def run(self):
         self.bot.remove_command('help')
-        print('Запустился')
+        print(f'{Fore.GREEN}Запустился{Fore.WHITE}')
 
         @self.bot.event
         async def on_ready():
             """
-            Этот ивент не работает должным образом с обычными профилями
+            Этот ивент не работает должным образом с обычными профилями дискорда
+            Если хотите внести сюда кариктеровки , то учитывайте это!
             Иногда срабатывает сразу иногда через какоето время
             """
             await self.bot.change_presence(activity=discord.Game('discord utils'))
@@ -356,24 +357,25 @@ class SelfBot:
         async def fresko(ctx, *, text: str):
             """
             Мем с Жаком Фреско
-            :param text: Текст в картинке (всего 59 симболов)
+            :param ctx: парметры
+            :param text: Текст в картинке (всего 56 симболов)
             :return: возращает картинку
             """
-            if len(text) <= 59:
+            if len(text) <= 56:
                 try:
                     await ctx.message.delete()
 
                     image = Image.open('media/memes/fresko.jpg')
 
                     # скачиваем шрифт
-                    arial = io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master/media'
+                    arial = io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master'
+                                                    '/media '
                                                     '/fonts/arialbd.ttf?raw=true').content)
                     draw = ImageDraw.Draw(image)
                     font = ImageFont.truetype(arial, 35, encoding="unic")
-                    draw.text((20, 60), f'{text[:18]}\n{text[18:39]}\n{text[39:59]}', fill=(0, 0, 0), font=font)
+                    draw.text((20, 60), f'{text[:18]}\n{text[18:33]}\n{text[33:56]}', fill=(0, 0, 0), font=font)
                     image.save('fresko.jpg')
                     await ctx.send(file=discord.File('fresko.jpg'))
-                    os.remove('fresko.jpg')
 
                 except Exception as e:
                     print(f'Ошибка : {e}')
