@@ -262,11 +262,11 @@ class SelfBot:
         @self.bot.command()
         async def chat_log(ctx):
             if self.__isChatlog:
-                self.__isChatlog = False
+                self.__isChatLog = False
                 await ctx.message.edit(content=None, embed=discord.Embed(title=':x: Лог чата выключен!',
                                                                          color=0xf00))
             else:
-                self.__isChatlog = True
+                self.__isChatLog = True
                 await ctx.message.edit(content=None, embed=discord.Embed(title='Лог чата включен!',
                                                                          color=0x15ff00))
             await asyncio.sleep(2)
@@ -401,18 +401,18 @@ class SelfBot:
                     image = Image.open('media/memes/fresko.jpg')
 
                     # скачиваем шрифт
-                    arial = io.BytesIO(requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master'
-                                                    '/media '
-                                                    '/fonts/arialbd.ttf?raw=true').content)
+                    arial = io.BytesIO(
+                        requests.get('https://github.com/VladislavAlpatov/discord-utils/blob/master/media'
+                                     '/fonts/arialbd.ttf?raw=true').content)
+
                     draw = ImageDraw.Draw(image)
                     font = ImageFont.truetype(arial, 35, encoding="unic")
-                    draw.text((20, 60), f'{text[:18]}\n{text[18:33]}\n{text[33:56]}', fill=(0, 0, 0), font=font)
+                    draw.text((10, 60), f'{text[:18]}\n{text[18:33]}\n{text[33:56]}', fill=(0, 0, 0), font=font)
                     image.save('fresko.jpg')
                     await ctx.send(file=discord.File('fresko.jpg'))
 
                 except Exception as e:
-                    print(f'Ошибка : {e}')
-
+                    print(f'Ошибка: {e}')
                 finally:
                     os.remove('fresko.jpg')
 
