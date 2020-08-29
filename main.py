@@ -18,9 +18,12 @@ class SelfBot:
     def __init__(self):
         """
         Основной класс бота
+
         """
         super().__init__()
         self.bot = commands.Bot(command_prefix='d_', self_bot=True)
+        self.__isChatlog = False
+
         with open('token.txt', 'r') as token:
             self.__token = token.read()
 
@@ -39,10 +42,26 @@ class SelfBot:
 
         @self.bot.event
         async def on_message(message):
+            """
+            Записывает чат если перемнная __isChatlog == True
+            :param message: прнимает сообщение
+            :return: Ничего
+            """
+            if self.__isChatlog:
+                with open('chat-log.txt', 'a') as f:
+                    f.write(f'<{message.guild.name}> <{message.channel.name}> '
+                            f'{message.author}: {message.content}\n')
+            else:
+                pass
             await self.bot.process_commands(message)
 
         @self.bot.command(aliases=['help'])
         async def help_message(ctx):
+            """
+            Сообщение где описываются все команды
+            :param ctx:
+            :return:
+            """
             hembed = discord.Embed(title='**Функции**', description='Discord utils', color=0x0095ff, )
             # заголовки
             hembed.add_field(name='**d_help**', value='Это сообщение.', inline=False)
@@ -61,6 +80,7 @@ class SelfBot:
             hembed.add_field(name='**d_trans**', value='Перевод на другие языки.', inline=False)
             hembed.add_field(name='**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
             hembed.add_field(name='**d_fresko**', value='Сделать мем про Жака Фреска.', inline=False)
+            hembed.add_field(name='**d_chat_log**', value='Включить либо выключить лог чата.', inline=False)
             hembed.set_thumbnail(url='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512'
                                      '/91_Discord_logo_logos-512.png')
             hembed.set_footer(text=f'Created by Vladislav Alpatov',
@@ -153,7 +173,7 @@ class SelfBot:
                 '(ಠ ʖ̯ ಠ)',
                 '( ˇ෴ˇ )',
                 '(͡ಠ ʖ̯ ͡ಠ)',
-                '¯\_(ツ)_/¯',
+                '¯\\_(ツ)_/¯',
                 'ᕙ(⇀‸↼‶)ᕗ',
                 'ᕦ(ò_óˇ)ᕤ',
                 '(づ￣ ³￣)づ',
@@ -162,7 +182,7 @@ class SelfBot:
                 '♪♪ ヽ(ˇ∀ˇ )ゞ',
                 '(っ▀¯▀)つ',
                 '~(^-^)~',
-                '\(ᵔᵕᵔ)/',
+                '\\(ᵔᵕᵔ)/',
                 '[¬º-°]¬',
                 'ฅ^•ﻌ•^ฅ',
                 '(╯°□°）╯︵ ┻━┻'
@@ -237,6 +257,19 @@ class SelfBot:
             for heart in hearts1:
                 await ctx.message.edit(content=heart)
                 await asyncio.sleep(0.5)
+            await ctx.message.delete()
+
+        @self.bot.command()
+        async def chat_log(ctx):
+            if self.__isChatlog:
+                self.__isChatlog = False
+                await ctx.message.edit(content=None, embed=discord.Embed(title=':x: Лог чата выключен!',
+                                                                         color=0xf00))
+            else:
+                self.__isChatlog = True
+                await ctx.message.edit(content=None, embed=discord.Embed(title='Лог чата включен!',
+                                                                         color=0x15ff00))
+            await asyncio.sleep(2)
             await ctx.message.delete()
 
         @self.bot.command(aliases=['зачем', 'нахуя'])
@@ -394,11 +427,11 @@ class SelfBot:
 
 
 if __name__ == '__main__':
-    input(f"""{Fore.RED}МЫ НЕ НЕСЁМ ОТВЕТСЕННОСТИ ЗА ВАШ АККАУНТ!
+    input(f'''{Fore.RED}МЫ НЕ НЕСЁМ ОТВЕТСЕННОСТИ ЗА ВАШ АККАУНТ!
 ВСЮ ОТВEСТВЕННОСТЬ ЗА НАРУШЕНИЕ ToS ВЫ БЕРЁТЕ НА СЕБЯ! {Fore.WHITE}
 {Fore.YELLOW}
 В файле token.txt ЗАМЕНИТЕ ТОКЕН НА СВОЙ!
 Иначе вы получите ошибку!
 {Fore.WHITE}
-Для продолжения введите Enter: """)
+Для продолжения введите Enter: ''')
     SelfBot().run()
