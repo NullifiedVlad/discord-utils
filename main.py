@@ -77,6 +77,7 @@ class SelfBot:
             hembed.add_field(name='**d_hearts**', value='Радужное сердце.', inline=False)
             hembed.add_field(name='**d_change_game**', value='Изменить игру в профиле.', inline=False)
             hembed.add_field(name='**d_think**', value='Гигант мысли, отец...', inline=False)
+            hembed.add_field(name='**d_joke**', value='Отправить рандомный анекдот', inline=False)
             hembed.add_field(name='**d_trans**', value='Перевод на другие языки.', inline=False)
             hembed.add_field(name='**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
             hembed.add_field(name='**d_fresko**', value='Сделать мем про Жака Фреска.', inline=False)
