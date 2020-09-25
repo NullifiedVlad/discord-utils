@@ -9,38 +9,33 @@ from discord.ext import commands
 from googletrans import Translator
 from colorama import Fore
 import SiteParser
-
+from configs import settings
 
 # pyinstaller -F -i "media\icons\logo.ico" main.py
 
 
-class SelfBot:
-    def __init__(self):
-        """
-        Основной класс бота
-
-        """
-        super().__init__()
-        self.bot = commands.Bot(command_prefix='d_', self_bot=True)
+class SelfBot(commands.Bot):
+    def __init__(self, command_prefix, **options):
+        super().__init__(command_prefix, **options)
         self.__isChatlog = False
 
         with open('token.txt', 'r') as token:
             self.__token = token.read()
 
-    def run(self):
-        self.bot.remove_command('help')
+    def start_bot(self):
+        self.remove_command('help')
         print(f'{Fore.GREEN}Запустился{Fore.WHITE}')
 
-        @self.bot.event
+        @self.event
         async def on_ready():
             """
             Этот ивент не работает должным образом с обычными профилями дискорда
             Если хотите внести сюда кариктеровки , то учитывайте это!
             Иногда срабатывает сразу иногда через какоето время
             """
-            await self.bot.change_presence(activity=discord.Game('discord utils'))
+            await self.change_presence(activity=discord.Game('discord utils'))
 
-        @self.bot.event
+        @self.event
         async def on_message(message):
             """
             Записывает чат если перемнная __isChatlog == True
@@ -53,9 +48,9 @@ class SelfBot:
                             f'{message.author}: {message.content}\n')
             else:
                 pass
-            await self.bot.process_commands(message)
+            await self.process_commands(message)
 
-        @self.bot.command(aliases=['help'])
+        @self.command(aliases=['help'])
         async def help_message(ctx):
             """
             Сообщение где описываются все команды
@@ -64,42 +59,42 @@ class SelfBot:
             """
             hembed = discord.Embed(title='**Функции**', description='Discord utils', color=0x0095ff, )
             # заголовки
-            hembed.add_field(name='**d_help**', value='Это сообщение.', inline=False)
-            hembed.add_field(name='**d_cat**', value='Отправить кота.', inline=False)
-            hembed.add_field(name='**d_embed**', value='Отправить ембиент.', inline=False)
-            hembed.add_field(name='**d_spam**', value='Поспамить.', inline=False)
-            hembed.add_field(name='**d_emoji**', value='Анимированные эмодзи', inline=False)
-            hembed.add_field(name='**d_rev**', value='Перевернуть сообщение.', inline=False)
-            hembed.add_field(name='**d_ascii**', value='Анимированные залго смайлы.', inline=True)
-            hembed.add_field(name='**d_nigga**', value='Сделать мем про ниггу.', inline=False)
-            hembed.add_field(name='**d_loading**', value='Создать загрузку.', inline=False)
-            hembed.add_field(name='**d_why**', value='Нахуя, а главное зачем.', inline=False)
-            hembed.add_field(name='**d_hearts**', value='Радужное сердце.', inline=False)
-            hembed.add_field(name='**d_change_game**', value='Изменить игру в профиле.', inline=False)
-            hembed.add_field(name='**d_think**', value='Гигант мысли, отец...', inline=False)
-            hembed.add_field(name='**d_joke**', value='Отправить рандомный анекдот', inline=False)
-            hembed.add_field(name='**d_trans**', value='Перевод на другие языки.', inline=False)
-            hembed.add_field(name='**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
-            hembed.add_field(name='**d_fresko**', value='Сделать мем про Жака Фреска.', inline=False)
-            hembed.add_field(name='**d_chat_log**', value='Включить либо выключить лог чата.', inline=False)
+            hembed.add_field(name=f'**{self.command_prefix}_help**', value='Это сообщение.', inline=False)
+            hembed.add_field(name=f'**d_cat**', value='Отправить кота.', inline=False)
+            hembed.add_field(name=f'**d_embed**', value='Отправить ембиент.', inline=False)
+            hembed.add_field(name=f'**d_spam**', value='Поспамить.', inline=False)
+            hembed.add_field(name=f'**d_emoji**', value='Анимированные эмодзи', inline=False)
+            hembed.add_field(name=f'**d_rev**', value='Перевернуть сообщение.', inline=False)
+            hembed.add_field(name=f'**d_ascii**', value='Анимированные залго смайлы.', inline=True)
+            hembed.add_field(name=f'**d_nigga**', value='Сделать мем про ниггу.', inline=False)
+            hembed.add_field(name=f'**d_loading**', value='Создать загрузку.', inline=False)
+            hembed.add_field(name=f'**d_why**', value='Нахуя, а главное зачем.', inline=False)
+            hembed.add_field(name=f'**d_hearts**', value='Радужное сердце.', inline=False)
+            hembed.add_field(name=f'**d_change_game**', value='Изменить игру в профиле.', inline=False)
+            hembed.add_field(name=f'**d_think**', value='Гигант мысли, отец...', inline=False)
+            hembed.add_field(name=f'**d_joke**', value='Отправить рандомный анекдот', inline=False)
+            hembed.add_field(name=f'**d_trans**', value='Перевод на другие языки.', inline=False)
+            hembed.add_field(name=f'**d_mae<hi,owo,kiss,scared>**', value='Стикеры про Мэй', inline=False)
+            hembed.add_field(name=f'**d_fresko**', value='Сделать мем про Жака Фреска.', inline=False)
+            hembed.add_field(name=f'**d_chat_log**', value='Включить либо выключить лог чата.', inline=False)
             hembed.set_thumbnail(url='https://cdn4.iconfinder.com/data/icons/logos-and-brands/512'
                                      '/91_Discord_logo_logos-512.png')
             hembed.set_footer(text=f'Created by Vladislav Alpatov',
                               icon_url='https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/88'
                                        '/88a9bb41c035dee03f76cb1e48adc40b45f3ac9e_full.jpg')
-            hembed.set_author(name=self.bot.user.name, icon_url=ctx.author.avatar_url)
+            hembed.set_author(name=self.user.name, icon_url=ctx.author.avatar_url)
             await ctx.message.edit(embed=hembed, content=None)
 
-        @self.bot.command()
+        @self.command()
         async def spam(ctx, count: int, *, words: str):
             for i in range(count):
                 await ctx.send(words)
 
-        @self.bot.command()
+        @self.command()
         async def embed(ctx, *, text: str):
-            await ctx.message.edit(embed=discord.Embed(title=text, color=0xff00b7), content=None)
+            await ctx.message.edit(embed=discord.Embed(title=text, color=settings.embed_message_color), content=None)
 
-        @self.bot.command()
+        @self.command()
         async def emoji(ctx):
             faces = (
                 ':grinning:',
@@ -123,7 +118,7 @@ class SelfBot:
                 await asyncio.sleep(0.5)
             await ctx.message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def cat(ctx):
             await ctx.message.delete()
             image = requests.get('https://thiscatdoesnotexist.com/')
@@ -132,7 +127,7 @@ class SelfBot:
             await ctx.send(file=discord.File('cat.jpg'))
             os.remove('cat.jpg')
 
-        @self.bot.command()
+        @self.command()
         async def loading(ctx, *, label: str):
             bars = (
                 '[----------]0%',
@@ -147,13 +142,16 @@ class SelfBot:
                 '[#########-]90%',
                 '[##########]100%')
             for bar in bars:
-                await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description=bar, color=0x0095ff),
-                                       content=None)
+                await ctx.message.edit(embed=discord.Embed(title=f'**{label}**',
+                                                           description=bar,
+                                                           color=settings.loading_color), content=None)
                 await asyncio.sleep(1)
-            await ctx.message.edit(embed=discord.Embed(title=f'**{label}**', description='Completed!', color=0x00ff1a),
+            await ctx.message.edit(embed=discord.Embed(title=f'**{label}**',
+                                                       description='Completed!',
+                                                       color=settings.loading_color_ready),
                                    content=None)
 
-        @self.bot.command(aliases=['ascii'])
+        @self.command(aliases=['ascii'])
         async def zalgo(ctx):
             """
             Анимированные zalgo эмодзи
@@ -193,21 +191,21 @@ class SelfBot:
                 await asyncio.sleep(1)
             await ctx.message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def rev(ctx, *, text: str):
             """
             Переворачивает сообщение
             """
             await ctx.message.edit(content=text[::-1])
 
-        @self.bot.command()
+        @self.command()
         async def quote(ctx):
             """
             Парсит и отправляет цитату
             """
             await ctx.message.edit(content=f'`{SiteParser.Quotes().getQuoteMessage()}`')
 
-        @self.bot.command()
+        @self.command()
         async def nigga(ctx, *, text: str):
             """
                 Костыльная хрень , ктоторая нуждается
@@ -241,7 +239,7 @@ class SelfBot:
             else:
                 await ctx.send('To many symbols')
 
-        @self.bot.command()
+        @self.command()
         async def hearts(ctx):
             """
             Анимированные сердечки OwO
@@ -260,7 +258,7 @@ class SelfBot:
                 await asyncio.sleep(0.5)
             await ctx.message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def chat_log(ctx):
             if self.__isChatlog:
                 self.__isChatLog = False
@@ -273,7 +271,7 @@ class SelfBot:
             await asyncio.sleep(2)
             await ctx.message.delete()
 
-        @self.bot.command(aliases=['зачем', 'нахуя'])
+        @self.command(aliases=['зачем', 'нахуя'])
         async def why(ctx):
             """
             Делает мем нахуя а главное зачем
@@ -303,7 +301,7 @@ class SelfBot:
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
 
-        @self.bot.command(aliases=['мысль', 'гигант'])
+        @self.command(aliases=['мысль', 'гигант'])
         async def think(ctx):
             """
             Делает мем гигант мысли
@@ -330,7 +328,7 @@ class SelfBot:
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def mae(ctx, emotion: str):
             """
             Стикеры с Мей
@@ -360,18 +358,18 @@ class SelfBot:
                 await asyncio.sleep(1.5)
                 await error_message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def change_game(ctx, *, game: str):
             """
             Изменение игры в профиле
             """
-            await self.bot.change_presence(activity=discord.Game(game))
+            await self.change_presence(activity=discord.Game(game))
             await ctx.message.edit(content=None, embed=discord.Embed(title=f'Игра изменна на: "**{game}**"',
                                                                      color=0xff5f5f))
             await asyncio.sleep(1.5)
             await ctx.message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def trans(ctx, mode: str, *, text: str):
             await ctx.message.edit(content='Перевожу...')
             try:
@@ -383,11 +381,11 @@ class SelfBot:
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
 
-        @self.bot.command()
+        @self.command()
         async def joke(ctx):
             await ctx.message.edit(content=SiteParser.Jokes().getJoke())
 
-        @self.bot.command()
+        @self.command()
         async def fresko(ctx, *, text: str):
             """
             Мем с Жаком Фреско
@@ -423,8 +421,7 @@ class SelfBot:
                                                                          color=0xff5f5f))
                 await asyncio.sleep(2)
                 await ctx.message.delete()
-
-        self.bot.run(self.__token, bot=False)
+        self.run(self.__token)
 
 
 if __name__ == '__main__':
@@ -435,4 +432,5 @@ if __name__ == '__main__':
 Иначе вы получите ошибку!
 {Fore.WHITE}
 Для продолжения введите Enter: ''')
-    SelfBot().run()
+    bot = SelfBot(command_prefix=settings,  self_bot=True)
+    bot.start_bot()
