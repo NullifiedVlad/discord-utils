@@ -11,6 +11,7 @@ from colorama import Fore
 import SiteParser
 from configs import settings
 
+
 # pyinstaller -F -i "media\icons\logo.ico" main.py
 
 
@@ -271,7 +272,7 @@ class SelfBot(commands.Bot):
             await asyncio.sleep(2)
             await ctx.message.delete()
 
-        @self.command(aliases=['зачем', 'нахуя'])
+        @self.command()
         async def why(ctx):
             """
             Делает мем нахуя а главное зачем
@@ -288,12 +289,12 @@ class SelfBot(commands.Bot):
                 image_on_paste = image_on_paste.resize((614, 336), Image.ANTIALIAS)
                 image.paste(image_on_paste, (72, 42))
 
-                image.save(f'{str(ctx.author.id)}.png')
+                image.save(f'{ctx.author.id}.png')
 
                 await ctx.message.delete()
-                await ctx.send(file=discord.File(f'{str(ctx.author.id)}.png'))
+                await ctx.send(file=discord.File(f'{ctx.author.id}.png'))
 
-                os.remove(f'{str(ctx.author.id)}.png')
+                os.remove(f'{ctx.author.id}.png')
             except IndexError:
                 await ctx.message.edit(embed=discord.Embed(title=':x: Вы не приложили картинку к команде!',
                                                            color=0xff0000), content=None)
@@ -301,7 +302,7 @@ class SelfBot(commands.Bot):
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
 
-        @self.command(aliases=['мысль', 'гигант'])
+        @self.command()
         async def think(ctx):
             """
             Делает мем гигант мысли
@@ -376,7 +377,7 @@ class SelfBot(commands.Bot):
                 text = Translator().translate(text=text, dest=mode)
                 await ctx.message.edit(content=text.text)
             except ValueError:
-                await ctx.message.edit(content=None, embed=discord.Embed(title=f':x: Вы выбрали несуществующий язык!',
+                await ctx.message.edit(content=None, embed=discord.Embed(title=':x: Вы выбрали несуществующий язык!',
                                                                          color=0xff5f5f))
                 await asyncio.sleep(1.5)
                 await ctx.message.delete()
@@ -406,7 +407,7 @@ class SelfBot(commands.Bot):
 
                     draw = ImageDraw.Draw(image)
                     font = ImageFont.truetype(arial, 35, encoding="unic")
-                    draw.text((10, 60), f'{text[:18]}\n{text[18:33]}\n{text[33:56]}', fill=(0, 0, 0), font=font)
+                    draw.text((5, 60), f'{text[:18]}\n{text[18:33]}\n{text[33:56]}', fill=(0, 0, 0), font=font)
                     image.save('fresko.jpg')
                     await ctx.send(file=discord.File('fresko.jpg'))
 
@@ -421,7 +422,21 @@ class SelfBot(commands.Bot):
                                                                          color=0xff5f5f))
                 await asyncio.sleep(2)
                 await ctx.message.delete()
-        self.run(self.__token)
+
+        @self.command()
+        async def avatar(ctx, *, user: discord.Member):
+            try:
+                await ctx.message.delete()
+                avatar_embed = discord.Embed()
+                avatar_embed.set_thumbnail(url=user.avatar_url)
+                await ctx.send(content=None, embed=avatar_embed)
+            except Exception:
+                await ctx.send(content=None, embed=discord.Embed(title=f':x: Пользователь **{user}** не найден!',
+                                                                 color=0xff5f5f))
+                await asyncio.sleep(1.5)
+                await ctx.message.delete()
+
+        self.run(self.__token, bot=False)
 
 
 if __name__ == '__main__':
@@ -432,5 +447,4 @@ if __name__ == '__main__':
 Иначе вы получите ошибку!
 {Fore.WHITE}
 Для продолжения введите Enter: ''')
-    bot = SelfBot(command_prefix=settings,  self_bot=True)
-    bot.start_bot()
+SelfBot(command_prefix=settings.command_prefix, self_bot=True).start_bot()
