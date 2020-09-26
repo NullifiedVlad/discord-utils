@@ -425,16 +425,10 @@ class SelfBot(commands.Bot):
 
         @self.command()
         async def avatar(ctx, *, user: discord.Member):
-            try:
-                await ctx.message.delete()
-                avatar_embed = discord.Embed()
-                avatar_embed.set_thumbnail(url=user.avatar_url)
-                await ctx.send(content=None, embed=avatar_embed)
-            except Exception:
-                await ctx.send(content=None, embed=discord.Embed(title=f':x: Пользователь **{user}** не найден!',
-                                                                 color=0xff5f5f))
-                await asyncio.sleep(1.5)
-                await ctx.message.delete()
+            await ctx.message.delete()
+            avatar_embed = discord.Embed()
+            avatar_embed.set_thumbnail(url=user.avatar_url)
+            await ctx.send(content=None, embed=avatar_embed)
 
         self.run(self.__token, bot=False)
 
