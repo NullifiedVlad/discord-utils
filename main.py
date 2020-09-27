@@ -19,7 +19,7 @@ class SelfBot(commands.Bot):
     def __init__(self, command_prefix, **options):
         super().__init__(command_prefix, **options)
         self.__isChatlog = False
-
+        self.__isRainBow = False
         with open('token.txt', 'r') as token:
             self.__token = token.read()
 
