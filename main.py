@@ -31,17 +31,17 @@ class SelfBot(commands.Bot):
         async def on_ready():
             """
             Этот ивент не работает должным образом с обычными профилями дискорда
-            Если хотите внести сюда кариктеровки , то учитывайте это!
-            Иногда срабатывает сразу иногда через какоето время
+            Если хотите внести сюда корректировки, то учитывайте это!
+            Иногда срабатывает сразу, иногда - через какое-то время
             """
             await self.change_presence(activity=discord.Game('discord utils'))
 
         @self.event
         async def on_message(message):
             """
-            Записывает чат если перемнная __isChatlog == True
+            Записывает чат если переменная __isChatlog == True
             :param message: прнимает сообщение
-            :return: Ничего
+            :return: None
             """
             if self.__isChatlog:
                 with open('chat-log.txt', 'a') as f:
@@ -56,7 +56,7 @@ class SelfBot(commands.Bot):
             """
             Сообщение где описываются все команды
             :param ctx:
-            :return:
+            :return: None
             """
             hembed = discord.Embed(title='**Функции**', description='Discord utils', color=0x0095ff, )
             # заголовки
@@ -211,7 +211,7 @@ class SelfBot(commands.Bot):
             """
                 Костыльная хрень , ктоторая нуждается
                 в переделке.
-                """
+            """
             await ctx.message.delete()
             if int(len(text)) < 40:
                 if 8 <= int(len(text)) <= 10:
