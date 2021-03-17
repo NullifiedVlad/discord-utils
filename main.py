@@ -213,15 +213,15 @@ class SelfBot(commands.Bot):
                 в переделке.
                 """
             await ctx.message.delete()
-            if int(len(text)) < 40:
-                if 8 <= int(len(text)) <= 10:
+            if len(text) < 40:
+                if 8 <= len(text) <= 10:
                     large = 65
-                elif int(len(text)) >= 12:
+                elif len(text) >= 12:
                     large = 50
                 else:
                     large = 90
 
-                if int(len(text)) >= 4:
+                if len(text) >= 4:
                     to_sum = 8
                 else:
                     to_sum = 3
@@ -233,12 +233,12 @@ class SelfBot(commands.Bot):
                                                 '/fonts/arialbd.ttf?raw=true').content)
                 draw = ImageDraw.Draw(image)
                 font = ImageFont.truetype(arial, large, encoding="unic")
-                draw.text((200 - int(len(text)) * to_sum, 600 - large), str(text), fill=(0, 0, 0), font=font)
+                draw.text((200 - len(text) * to_sum, 600 - large), str(text), fill=(0, 0, 0), font=font)
                 image.save('nigga-out.jpg')
                 await ctx.send(file=discord.File('nigga-out.jpg'))
                 os.remove('nigga-out.jpg')
             else:
-                await ctx.send('To many symbols')
+                await ctx.send('Too many symbols')
 
         @self.command()
         async def hearts(ctx):
